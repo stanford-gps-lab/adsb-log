@@ -146,7 +146,7 @@ classdef Aircraft < matlab.mixin.Copyable
             %   path if the filename is a full path) for where to save the
             %   KML file.
             %
-            % See Also: adsblog.creatKMLFromAircraft
+            % See Also: adsblog.createKMLFromAircraft
 
             % default filename
             if nargin < 2

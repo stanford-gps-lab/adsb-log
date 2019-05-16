@@ -1,5 +1,24 @@
 function [] = createKMLFromAircraft(acs, kmlfilename)
-% TODO: better help file
+% createKMLFromAircraft     create a set of KML files from the sightings
+% contained within an aircraft.
+%   Two KML files are generated: one with a time slider
+%   (`<filename>-gx.kml`) and one without a time slider (`<filename>.kml`).
+%   The KML files contain the flight paths for each flight segment for each
+%   aircraft in the aircraft list.  Each of the sightings is colored
+%   according to whether or not the sighting was an interpolated point or
+%   was a geniune sighting (green is genuine, red is an interpolated
+%   point).  In creating the KML files, this function creates a temporary
+%   directory (`kml-data`) in the current working directory.  It will be
+%   removed when the function completes.
+%
+%   adsblog.createKMLFromAircraft(acs, filename) creates the 2 KML files
+%   from the given list of aircraft (or signal aircraft) into files given
+%   by the filename.  Note that the filename is only the base filename and
+%   should not contain an extension.
+%
+% See Also: adsblog.Aircraft.createKML
+
+% TODO: add ability to keep the CSV files if desired...
 %   ideally this will create a KML from aircraft data
 %   first a CSV will be generated and then it will call a python script
 %   that converts that to a KML and then the CSV will be deleted
