@@ -14,9 +14,13 @@ TODO: add how to download the toolbox, or how to clone the code and add it to th
 ### Toolbox ###
 
 
+
+
 ### Clone of Code ###
 
+If you clone the code to your computer (with `git clone https://github.com/adrnp/adsb-log.git`) you will need to make sure you add the `adsblog` directory to your MATLAB path.
 
+Follow along with MATLAB's [guide to adding a directory to the path](https://www.mathworks.com/help/matlab/matlab_env/add-remove-or-reorder-folders-on-the-search-path.html) and make sure you add the `adsblog` directory within this repository to the MATLAB path.  **Note:** You need only add the one directory (folder) to the path.
 
 
 ## Using the Toolbox ##
