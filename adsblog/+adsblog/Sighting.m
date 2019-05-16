@@ -1,10 +1,10 @@
-classdef LogMessage < matlab.mixin.Copyable
-% LogMessage    a container for a specific ADS-B message.
+classdef Sighting < matlab.mixin.Copyable
+% Sighting    a container for a specific ADS-B sighting message.
 %
-%   message = adsblog.LogMessage(jsonStruct) creates a list of LogMessage
+%   message = adsblog.Sighting(jsonStruct) creates a list of Sighting
 %   type that contains the parsed log JSON struct information.  The input,
 %   jsonStruct can be either a single struct or a list of structs to be
-%   created into a list of LogMessages.  The JSON struct contains the
+%   created into a list of Sightings.  The JSON struct contains the
 %   following:
 %       - .seen_pos
 %       - .track
@@ -15,7 +15,7 @@ classdef LogMessage < matlab.mixin.Copyable
 %       - .feeder_id
 %       - .interp -> this is an optional field of the struct
 %
-% See Also: adsblog.FlightLog, adsblog.Aircraft
+% See Also: adsblog.FlightSegment, adsblog.Aircraft
 
     properties
         Timestamp       % the timestamp for this message
@@ -35,7 +35,7 @@ classdef LogMessage < matlab.mixin.Copyable
     
     methods
     
-        function obj = LogMessage(jsonStruct)
+        function obj = Sighting(jsonStruct)
             
             % allow an empty constructor
             if nargin < 1
@@ -45,7 +45,7 @@ classdef LogMessage < matlab.mixin.Copyable
             % copy the data from the struct to this class (setup to be able
             % to handle getting a list of JSON Structs)
             Nstructs = length(jsonStruct);
-            obj(Nstructs) = adsblog.LogMessage();
+            obj(Nstructs) = adsblog.Sighting();
             obj(1) = copy(obj(Nstructs));
             
             % need to do some quick adjustment if there is only one struct

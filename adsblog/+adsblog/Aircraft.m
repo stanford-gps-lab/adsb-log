@@ -1,7 +1,7 @@
 classdef Aircraft < matlab.mixin.Copyable
 % Aircraft  a representation of a given aircraft in an ADSB log
 %   An Aircraft contains the high level meta data that defines the aircraft
-%   itself and a list of FlightLog the contain the various sightings of
+%   itself and a list of FlightSegment the contain the various sightings of
 %   the given aircraft in a given log.
 %
 %   aircraft = adsblog.Aircraft(jsonStruct) creates an instance of an
@@ -15,7 +15,7 @@ classdef Aircraft < matlab.mixin.Copyable
 %       - .eng_mfr
 %       - .x__segments
 %
-% See Also: adsblog.FlightLog
+% See Also: adsblog.FlightSegment, adsblog.Sighting
 
     properties
         TailNumber          % tail number of the aircraft
@@ -25,7 +25,7 @@ classdef Aircraft < matlab.mixin.Copyable
         EngineModel         % engine model
         EngineManufacturer  % engine manufacturer
         Nsegments           % number of flight segments (length of flight log list)
-        FlightLogs          % list of flight logs for this aircraft
+        FlightSegments      % list of flight segments for this aircraft
     end
     
     
@@ -46,7 +46,7 @@ classdef Aircraft < matlab.mixin.Copyable
             obj.EngineModel = jsonStruct.eng_model;
             obj.EngineManufacturer = jsonStruct.eng_mfr;
             obj.Nsegments = jsonStruct.x__segments;
-            obj.FlightLogs = [];
+            obj.FlightSegments = [];
         end
 
         function dest = getDestination(obj)
@@ -56,7 +56,7 @@ classdef Aircraft < matlab.mixin.Copyable
             %   dest = aircraft.getDestination() returns a cell array of
             %   the unique destinations of all the flight logs
 
-            dest = unique({obj.FlightLogs.Destination});
+            dest = unique({obj.FlightSegments.Destination});
         end
         
         function ac = getAircraftByICAO(obj, icao)
@@ -109,8 +109,8 @@ classdef Aircraft < matlab.mixin.Copyable
             for i = 1:Naircraft
 
                 ac = obj(i);
-                fl = [ac.FlightLogs];
-                m = [fl.Messages];
+                fl = [ac.FlightSegments];
+                m = [fl.Sightings];
                 p = [m.Position];
 
                 % compute the distance to all the points for this aircraft
@@ -163,8 +163,8 @@ classdef Aircraft < matlab.mixin.Copyable
             %   aircraft.plot() plots the latitude, longitude position of
             %   all the received ADS-B messages for this specific aircraft.
 
-            allLogs = [obj.FlightLogs];
-            allMsgs = [allLogs.Messages];
+            allLogs = [obj.FlightSegments];
+            allMsgs = [allLogs.Sightings];
             allPos = [allMsgs.Position];
             plot(allPos(2,:), allPos(1,:), 'x');
             xlabel('longitude'); ylabel('latitude');
@@ -181,7 +181,7 @@ classdef Aircraft < matlab.mixin.Copyable
             newobj = copyElement@matlab.mixin.Copyable(obj);
             
             % make sure to properly copy custom classes
-            newobj.FlightLogs = copy(obj.FlightLogs);
+            newobj.FlightSegments = copy(obj.FlightSegments);
         end
    end
     

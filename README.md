@@ -13,8 +13,13 @@ TODO: add how to download the toolbox, or how to clone the code and add it to th
 
 ### Toolbox ###
 
-NOTE: these instructions coming, once I give it a try.
+If you just want to use this toolbox as a toolbox and don't plan on developing any code, you can simply install the toolbox itself.
 
+ 1. Go to the [releases page](https://github.com/adrnp/adsb-log/releases) and select the release you want to install (recommended most recent stable release)
+ 2. From the assets list, download the `adsblog.mltbx` file
+ 3. Run the file, which should bring up MATLAB's package add-on window and install the toolbox
+
+Now you're all set to use the toolbox, so [check out below for how to get working with the toolbox](#using-the-toolbox).
 
 ### Clone of Code ###
 
@@ -75,27 +80,27 @@ If no parameter is passed, then the function will use a default filename.
 This toolbox breaks down the JSON log data into 3 key classes that serve as containers for the data, and have some helper functions:
 
  - [Aircraft](#aircraft)
- - [Flight Log](#flight-log)
- - [Log Message](#log-message)
+ - [Flight Segment](#flight-segment)
+ - [Sighting](#sighting)
 
-At a very high level, each ADS-B sighting is converted to a `LogMessage`, a collection of continuous sightings, or flight segment, is contained in `FlightLog` and finally all of this is tied to a specific aircraft and is all contained in an `Aircraft`.
+At a very high level, each ADS-B sighting is converted to a `Sighting`, a collection of continuous sightings, or flight segment, is contained in `FlightSegment` and finally all of this is tied to a specific aircraft and is all contained in an `Aircraft`.
 
 **Note:** For full documentation of each of the classes, the functions available to them, etc. use MATLAB's `help` function.  These descriptions below are merely to serve as a starting point to help understand the overall structure as to how the log data is broken down and imported into MATLAB for manipulation.
 
 ### Aircraft ###
 
-The `Aircraft` class is a container for each of the different aircraft that are contained within the JSON log data.  An `Aircraft` contains a set of metadata about the aircraft itself (e.g. type, ICAO number, tail number, etc) and a list of `FlightLog` data types, where each `FlightLog` is what the JSON structure calls a flight segment.
+The `Aircraft` class is a container for each of the different aircraft that are contained within the JSON log data.  An `Aircraft` contains a set of metadata about the aircraft itself (e.g. type, ICAO number, tail number, etc) and a list of `FlightSegment` data types, where each `FlightSegment` is what the JSON structure calls a flight segment.
 
 To help sort through a list of aircrafts and find different subsets, there are several helper functions provided in the class.  For specific details, use `help adsblog.Aircraft` to pull up the detailed documentation.
 
-### Flight Log ###
+### Flight Segment ###
 
-The `FlightLog` class is another container to encapsulate the metadata for a given flight segment and contains a list of `LogMessage` data types that each contain a specific ADS-B sighting.  The `FlightLog` metadata contains information such as the segment number, the number of sighting in the segment, duration of the segment, etc.
+The `FlightSegment` class is another container to encapsulate the metadata for a given flight segment and contains a list of `Sighting` data types that each contain a specific ADS-B sighting.  The `FlightSegment` metadata contains information such as the segment number, the number of sighting in the segment, duration of the segment, etc.
 
 For the log, a flight segment is considered to be a "continuous" collection of ADS-B sightings for a given aircraft.  Some aircraft may have a single flight be considered multiple segments if, for example, the flight took off from the Bay Area to Lake Tahoe and back due to the fact that in doing so the aircraft will go out of range of the feeder antennas located in the Bay Area and the flight will therefore be broke into 2 continuous segments.
 
 Each segment does contain `origin` and `destination` data that is a post processed attempt at specifying the mjaor airport in the Bay Area from which it either left or is arriving.  This data is not the most trustworthy so use it cautiously.
 
-### Log Message ###
+### Sighting ###
 
-The `LogMessage` class is the final container used to represent the JSON log data.  This class encapsulates the data for each of the ADS-B sightings.  Note that some of the sightings are interpolated sightings and flagged accordingly in the log message for that sighting.
+The `Sighting` class is the final container used to represent the JSON log data.  This class encapsulates the data for each of the ADS-B sightings.  Note that some of the sightings are interpolated sightings and flagged accordingly in the Sighting for that sighting.

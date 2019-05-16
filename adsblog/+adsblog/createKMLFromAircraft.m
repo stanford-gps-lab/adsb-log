@@ -40,11 +40,11 @@ for ai = 1:length(acs)
     combined = [];
 
     % get messages by flight segment to add segment index
-    Nsegments = length(ac.FlightLogs);
+    Nsegments = length(ac.FlightSegments);
     for i = 1:Nsegments
 
         % get all the messages and the details from the message
-        msgs = [ac.FlightLogs(i).Messages];
+        msgs = [ac.FlightSegments(i).Sightings];
         segInds = i * ones(length(msgs), 1);
         estimated = [msgs.Estimated];
         allT = posixtime([msgs.DateTime]);

@@ -7,7 +7,7 @@ function aircraftData = jsonStructToAircraft(jsonStruct)
 %   contain all of the ADS-B sightings for all the flight segments for all
 %   the aircraft within the log.
 %
-% See Also: adsblog.Aircraft, adsblog.FlightLog, adsblog.LogMessage
+% See Also: adsblog.Aircraft, adsblog.FlightSegment, adsblog.Sighting
 
 
 % get the aircraft in the log
@@ -26,25 +26,25 @@ for i = 1:Naircraft
     ad = adsblog.Aircraft(aircraftStruct);
     
     % loop through all the segments
-    allLogs = adsblog.FlightLog();
-    allLogs(ad.Nsegments) = adsblog.FlightLog();
+    allLogs = adsblog.FlightSegment();
+    allLogs(ad.Nsegments) = adsblog.FlightSegment();
     for k = 1:ad.Nsegments
         
         % get the overview data on the logs
         logOverview = a{k+1}{1};
-        log = adsblog.FlightLog(logOverview);
+        log = adsblog.FlightSegment(logOverview);
 
         % get the actual log messages
         flightDetails = a{k+1}{2};
-        messages = adsblog.LogMessage(flightDetails);
+        sightings = adsblog.Sighting(flightDetails);
         
         % save the elements to their properties
-        log.Messages = messages;
+        log.Sightings = sightings;
         allLogs(k) = log;
     end
     
     % save the log set
-    ad.FlightLogs = allLogs;
+    ad.FlightSegments = allLogs;
     
     % save the data to the aircraft data list
     aircraftData(i) = ad;
