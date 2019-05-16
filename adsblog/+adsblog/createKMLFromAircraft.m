@@ -40,8 +40,15 @@ for ai = 1:length(acs)
 end
 
 % run the python script
-[~, ~] = system(sprintf('python csv-to-kml.py %s.kml', kmlfilename));
-[~, ~] = system(sprintf('python csv2gxkml.py %s-gx.kml', kmlfilename));
+scriptDir = mfilename('fullpath');  % returns path with this filename
+[scriptDir, ~, ~] = fileparts(scriptDir);  % returns package path
+
+% create the path to the scripts which reside 2 above the matlab package
+% path
+csv2kmlScript = fullfile(scriptDir, '..', '..', 'csv-to-kml.py');
+csv2gxkmlScript = fullfile(scriptDir, '..', '..', 'csv2gxkml.py');
+[~, ~] = system(sprintf('python %s %s.kml', csv2kmlScript, kmlfilename));
+[~, ~] = system(sprintf('python %s %s-gx.kml', csv2gxkmlScript, kmlfilename));
 
 % delete all the csv files
 delete 'kml-data/*.csv'
