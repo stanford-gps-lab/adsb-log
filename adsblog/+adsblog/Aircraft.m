@@ -1,7 +1,22 @@
 classdef Aircraft < matlab.mixin.Copyable
-    % a specific aircraft from the log -> I'm assuming that a mode s code
-    % is unique to an aircraft
-    
+% Aircraft  a representation of a given aircraft in an ADSB log
+%   An Aircraft contains the high level meta data that defines the aircraft
+%   itself and a list of FlightLog the contain the various sightings of
+%   the given aircraft in a given log.
+%
+%   aircraft = adsblog.Aircraft(jsonStruct) creates an instance of an
+%   Aircraft with the data contained in the parsed JSON struct.  The JSON
+%   struct should contain the following fields:
+%       - .tail__
+%       - .ica
+%       - .ac_type
+%       - .ac_mfr
+%       - .eng_model
+%       - .eng_mfr
+%       - .x__segments
+%
+% See Also: adsblog.FlightLog
+
     properties
         TailNumber          % tail number of the aircraft
         ICAO                % ICAO hex ID
@@ -9,14 +24,13 @@ classdef Aircraft < matlab.mixin.Copyable
         Manufacturer        % aircraft manufacturer
         EngineModel         % engine model
         EngineManufacturer  % engine manufacturer
-        Nsegments           % number of flight segments (length of flight log list?)
+        Nsegments           % number of flight segments (length of flight log list)
         FlightLogs          % list of flight logs for this aircraft
     end
     
     
-    
     methods
-        
+
         function obj = Aircraft(jsonStruct)
             
             % allow empty constructor
@@ -36,27 +50,65 @@ classdef Aircraft < matlab.mixin.Copyable
         end
 
         function dest = getDestination(obj)
-            % get the unique destinations
+            % getDestination    retrieve the unique list of destinations
+            % for this aircraft from the set of flight logs contained in
+            % this object.
+            %   dest = aircraft.getDestination() returns a cell array of
+            %   the unique destinations of all the flight logs
+
             dest = unique({obj.FlightLogs.Destination});
         end
         
-        function createKML(obj, filename)
-            if nargin < 2
-                filename = 'flight-data.kml';
-            end
-            createKMLFromAircraft(obj, filename);
-        end
-        
         function ac = getAircraftByICAO(obj, icao)
+            % getAircraftByICAO     retrieve a specific aircraft from a
+            % list of Aircraft by ICAO number
+            %   ac = aircraft.getAircraftByICAO(icao) returns the Aircraft
+            %   object containing the data for the aircraft with the
+            %   specified ICAO number from a list of Aircraft types
+            %   (aircraft).  If it is not found, the result in an empty
+            %   object.
+            
             % get the aircraft with that ICAO number from the list
             ac = obj(strcmp({obj.ICAO}, icao));
         end
         
+        function createKML(obj, filename)
+            % createKML     create a KML file containing the flight path of
+            % all the flight logs.
+            %   aircraft.createKML() creates a KML that contains all of the
+            %   flight segments for the given aircraft.  If aircraft is a
+            %   list of Aircraft types, then the resulting KML will contain
+            %   all of the flight segments for all the given aircraft in
+            %   the list.  The KML file generated is called
+            %   'flight-data.kml'
+            %
+            %   aircraft.createKML(filename) specifies the filename (and
+            %   path if the filename is a full path) for where to save the
+            %   KML file.
+            %
+            % See Also: adsblog.creatKMLFromAircraft
+
+            % default filename
+            if nargin < 2
+                filename = 'flight-data.kml';
+            end
+            
+            % call the helper function
+            createKMLFromAircraft(obj, filename);
+        end
+
         function plot(obj)
+            % plot  plot the latitude and longitude position for all the
+            % flight segments for a single aircraft.
+            %   aircraft.plot() plots the latitude, longitude position of
+            %   all the received ADS-B messages for this specific aircraft.
+
             allLogs = [obj.FlightLogs];
             allMsgs = [allLogs.Messages];
             allPos = [allMsgs.Position];
             plot(allPos(2,:), allPos(1,:), 'x');
+            xlabel('longitude'); ylabel('latitude');
+            title('ADS-B Messages');
         end
         
     end
