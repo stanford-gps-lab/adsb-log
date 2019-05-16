@@ -1,20 +1,36 @@
 classdef FlightLog < matlab.mixin.Copyable
-    % TODO: description and maybe better name....
+% FlightLog     a container for a set of ADS-B messages in a given segment
+%   contains the metadata for a given aircraft flight segment and a list of
+%   all the ADS-B messages that make up the given flight segment.
+%
+%   log = adsblog.FlightLog(jsonStruct) creates a FlightLog instance from
+%   the metadata provided in the log parsed JSON structure with the
+%   following fields:
+%       - .segment
+%       - .gap
+%       - .segment_start
+%       - .segment_end
+%       - .x__sightings
+%       - .gps_max
+%       - .gps_min
+%       - .origin
+%       - .destination
+%
+% See Also: adsblog.LogMessage, adsblog.Aircraft
     
     properties
-        Segment         % unknown
+        Segment         % the ID of the this flight segment
         Gap             % unknown
         Tstart          % start time of the flight segment
         Tend            % end time of the segment
         Nsightings      % number of messages (sightings)
         GPSMax          % max GPS (?)
         GPSMin          % min GPS (?)
-        Origin          % origin
-        Destination     % destination (string)
+        Origin          % origin (string) - best guess of
+        Destination     % destination (string) - best guess of
         Messages        % the list of LogMessage for this flight log
         
     end
-    
     
     methods
         
@@ -25,7 +41,7 @@ classdef FlightLog < matlab.mixin.Copyable
                 return;
             end
             
-            % parse out the results
+            % parse out the structure
             obj.Segment = jsonStruct.segment;
             obj.Gap = jsonStruct.gap;
             obj.Tstart = jsonStruct.segment_start;
@@ -50,6 +66,5 @@ classdef FlightLog < matlab.mixin.Copyable
             newobj.Messages = copy(obj.Messages);
         end
    end
-    
-    
+
 end

@@ -1,12 +1,28 @@
 classdef LogMessage < matlab.mixin.Copyable
-    % TODO: the name might change...
-    
+% LogMessage    a container for a specific ADS-B message.
+%
+%   message = adsblog.LogMessage(jsonStruct) creates a list of LogMessage
+%   type that contains the parsed log JSON struct information.  The input,
+%   jsonStruct can be either a single struct or a list of structs to be
+%   created into a list of LogMessages.  The JSON struct contains the
+%   following:
+%       - .seen_pos
+%       - .track
+%       - .speed
+%       - .lat, .lon, .altitude
+%       - .distance
+%       - .vert_rate
+%       - .feeder_id
+%       - .interp -> this is an optional field of the struct
+%
+% See Also: adsblog.FlightLog, adsblog.Aircraft
+
     properties
         Timestamp       % the timestamp for this message
         Track           % heading in [deg]
         Speed           % speed in [knts] (?)
         Position        % position in [lat, lon, alt] in [deg deg ft]
-        Distance        % unknown
+        Distance        % the distance to the feeder (?)
         VerticalRate    % vertical rate in [ft/min]
         FeederId        % the ID of the feeder for this message
         
@@ -17,8 +33,8 @@ classdef LogMessage < matlab.mixin.Copyable
         DateTime    % the timestamp for the message as a MATLAB datetime object
     end
     
-    
     methods
+    
         function obj = LogMessage(jsonStruct)
             
             % allow an empty constructor
