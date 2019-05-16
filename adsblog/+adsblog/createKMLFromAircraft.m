@@ -47,4 +47,4 @@ end
 delete 'kml-data/*.csv'
 
 % remove the temp directory
-rm('kml-data');
+rmdir('kml-data');

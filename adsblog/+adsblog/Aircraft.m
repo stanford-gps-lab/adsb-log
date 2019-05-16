@@ -154,7 +154,7 @@ classdef Aircraft < matlab.mixin.Copyable
             end
             
             % call the helper function
-            createKMLFromAircraft(obj, filename);
+            adsblog.createKMLFromAircraft(obj, filename);
         end
 
         function plot(obj)
