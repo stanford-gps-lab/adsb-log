@@ -15,7 +15,7 @@ aircraftCodes = fieldnames(jsonStruct.aircraft);
 Naircraft = length(aircraftCodes);
 
 % create the arrays to store the data
-aircraftData(Naircraft) = Aircraft();
+aircraftData(Naircraft) = adsblog.Aircraft();
 
 % loop through all the aircraft
 for i = 1:Naircraft
@@ -23,20 +23,20 @@ for i = 1:Naircraft
     
     % get each of the elements
     aircraftStruct = a{1};
-    ad = Aircraft(aircraftStruct);
+    ad = adsblog.Aircraft(aircraftStruct);
     
     % loop through all the segments
-    allLogs = FlightLog();
-    allLogs(ad.Nsegments) = FlightLog();
+    allLogs = adsblog.FlightLog();
+    allLogs(ad.Nsegments) = adsblog.FlightLog();
     for k = 1:ad.Nsegments
         
         % get the overview data on the logs
         logOverview = a{k+1}{1};
-        log = FlightLog(logOverview);
+        log = adsblog.FlightLog(logOverview);
 
         % get the actual log messages
         flightDetails = a{k+1}{2};
-        messages = LogMessage(flightDetails);
+        messages = adsblog.LogMessage(flightDetails);
         
         % save the elements to their properties
         log.Messages = messages;

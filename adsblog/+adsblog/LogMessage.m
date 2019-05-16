@@ -45,7 +45,7 @@ classdef LogMessage < matlab.mixin.Copyable
             % copy the data from the struct to this class (setup to be able
             % to handle getting a list of JSON Structs)
             Nstructs = length(jsonStruct);
-            obj(Nstructs) = LogMessage();
+            obj(Nstructs) = adsblog.LogMessage();
             obj(1) = copy(obj(Nstructs));
             
             % need to do some quick adjustment if there is only one struct

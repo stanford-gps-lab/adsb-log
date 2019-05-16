@@ -7,9 +7,11 @@ function [] = createKMLFromAircraft(acs, kmlfilename)
 %   the CSV is formatted as follows
 %       segment index, estimated, timestamp, lat, lon, alt
 
+% create the temp directory for the kml data
+mkdir('kml-data');
 
 if nargin < 2
-    kmlfilename = 'flight-data.kml';
+    kmlfilename = 'flight-data';
 end
 
 for ai = 1:length(acs)
@@ -29,11 +31,12 @@ for ai = 1:length(acs)
         allT = posixtime([msgs.DateTime]);
         allPos = [msgs.Position];
 
-        combined = [combined;segInds estimated' allT' allPos'];
+        combined = [combined; segInds estimated' allT' allPos'];
     end
 
     % write to the csv file
-    dlmwrite(sprintf('kml-data/%s.csv', ac.ICAO), combined, 'delimiter', ',', 'precision', 20);
+    dlmwrite(fullfile('kml-data', sprintf('%s.csv', ac.ICAO)), ...
+             combined, 'delimiter', ',', 'precision', 20);
 end
 
 % run the python script
@@ -41,4 +44,7 @@ end
 [~, ~] = system(sprintf('python csv2gxkml.py %s-gx.kml', kmlfilename));
 
 % delete all the csv files
-delete kml-data/*.csv
+delete 'kml-data/*.csv'
+
+% remove the temp directory
+rm('kml-data');

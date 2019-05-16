@@ -108,7 +108,7 @@ classdef Aircraft < matlab.mixin.Copyable
             closeToLocation = zeros(1, Naircraft);
             for i = 1:Naircraft
 
-                ac = aircraftData(i);
+                ac = obj(i);
                 fl = [ac.FlightLogs];
                 m = [fl.Messages];
                 p = [m.Position];
