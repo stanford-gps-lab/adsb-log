@@ -64,7 +64,7 @@ classdef FlightSegment < matlab.mixin.Copyable
             newobj = copyElement@matlab.mixin.Copyable(obj);
             
             % make sure to properly copy custom classes
-            newobj.Messages = copy(obj.Messages);
+            newobj.Sightings = copy(obj.Sightings);
         end
    end
 

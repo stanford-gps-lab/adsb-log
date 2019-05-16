@@ -9,7 +9,10 @@ To get up and running and using the toolbox, check out the [Using the Toolbox](#
 
 ## Getting Started ##
 
-TODO: add how to download the toolbox, or how to clone the code and add it to the MATLAB path.
+There are two ways to get started with the toolbox:
+
+ - [download and install the toolbox for use](#toolbox)
+ - [download the source code and install the toolbox for developement](#clone-of-code)
 
 ### Toolbox ###
 
@@ -24,6 +27,8 @@ Now you're all set to use the toolbox, so [check out below for how to get workin
 ### Clone of Code ###
 
 If you clone the code to your computer (with `git clone https://github.com/adrnp/adsb-log.git`) you will need to make sure you add the `adsblog` directory to your MATLAB path.
+
+**Note:** If you plan on developing the code actively, it is recommended that you [fork the repository](https://help.github.com/en/articles/fork-a-repo).
 
 Follow along with MATLAB's [guide to adding a directory to the path](https://www.mathworks.com/help/matlab/matlab_env/add-remove-or-reorder-folders-on-the-search-path.html) and make sure you add the `adsblog` directory within this repository to the MATLAB path.  **Note:** You need only add the one directory (folder) to the path.
 
@@ -71,6 +76,8 @@ To do this task, we can use the `createKML()` function:
 ac.createKML('kml-file-name');
 ```
 
+**Note:** The creation of the KML file required python be installed the the [dependencies listed below](#kml-dependencies).
+
 If no parameter is passed, then the function will use a default filename.
 
 **Note:** the filename does not contain an extension.  This is because the function `createKML()` create 2 different types of KML files (one with a time slider, one without) and appends an identifier to the filename for the 2 different file types and then adds the `.kml` extension.
@@ -104,3 +111,15 @@ Each segment does contain `origin` and `destination` data that is a post process
 ### Sighting ###
 
 The `Sighting` class is the final container used to represent the JSON log data.  This class encapsulates the data for each of the ADS-B sightings.  Note that some of the sightings are interpolated sightings and flagged accordingly in the Sighting for that sighting.
+
+## Dependencies ##
+
+This section covers some of the code dependencies.
+
+### KML Dependencies ###
+
+The KML creation uses a couple python scripts that have the following python dependencies (can be installed with `pip install` for each of these):
+
+ - `csv`
+ - `pytz`
+ - `simplekml`
