@@ -37,7 +37,23 @@ for i = 1:Naircraft
     p = [m.Position];
 
     % compute the distance to all the points for this aircraft
-    [arclen, ~] = distance([lat lon], p(1:2,:)', referenceEllipsoid('wgs84'));
+    try
+        [arclen, ~] = distance([lat lon], p(1:2,:)', ...
+                               referenceEllipsoid('wgs84'));
+        missingToolbox = false;
+    catch ME
+        if strcmp(ME.identifier, 'MATLAB:UndefinedFunction')
+            % MAPPING toolbox not installed. Compute assuming spherical
+            % earth
+            missingToolbox = true;
+            R_E = 6371000;
+            arclen = R_E * 2 * asin(sqrt((sind(lat - p(1, :))/2).^2 ...
+                + cosd(lat) .* cosd(p(1, :)) .* sind((lon - p(2, :))/2).^2));
+        else
+            rethrow(ME)
+        end
+    end
+        
 
     % find the closest approach distance and altitude at that point
     [horizDist, ind] = min(arclen);
@@ -48,7 +64,10 @@ for i = 1:Naircraft
         closeToLocation(i) = 1;
     end
 end
-
+if missingToolbox
+    disp(['Missing MAPPING toolbox. ', ...
+          'Distances are computed assuming spherical earth.'])
+end
 fprintf('number of aircraft of interest: %d\n', sum(closeToLocation));
 
 % make the hayward aircraft list
