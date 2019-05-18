@@ -72,6 +72,19 @@ classdef Aircraft < matlab.mixin.Copyable
             ac = obj(strcmp({obj.ICAO}, icao));
         end
         
+        function ac = getAircraftByType(obj, type)
+            % getAircraftByICAO     retrieve a specific aircraft from a
+            % list of Aircraft by ICAO number
+            %   ac = aircraft.getAircraftByICAO(icao) returns the Aircraft
+            %   object containing the data for the aircraft with the
+            %   specified ICAO number from a list of Aircraft types
+            %   (aircraft).  If it is not found, the result in an empty
+            %   object.
+            
+            % get the aircraft with that ICAO number from the list
+            ac = obj(strcmp({obj.Type}, type));
+        end
+        
         function createKML(obj, filename)
             % createKML     create a KML file containing the flight path of
             % all the flight logs.
