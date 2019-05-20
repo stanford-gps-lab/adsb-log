@@ -73,15 +73,15 @@ classdef Aircraft < matlab.mixin.Copyable
         end
         
         function ac = getAircraftByType(obj, type)
-            % getAircraftByICAO     retrieve a specific aircraft from a
-            % list of Aircraft by ICAO number
-            %   ac = aircraft.getAircraftByICAO(icao) returns the Aircraft
+            % getAircraftByType     retrieve a specific aircraft from a
+            % list of Aircraft by Type
+            %   ac = aircraft.getAircraftByType(type) returns the Aircraft
             %   object containing the data for the aircraft with the
-            %   specified ICAO number from a list of Aircraft types
+            %   specified Type (e.g. 'B738') from a list of Aircraft types
             %   (aircraft).  If it is not found, the result in an empty
             %   object.
             
-            % get the aircraft with that ICAO number from the list
+            % get the aircraft with that Type from the list
             ac = obj(strcmp({obj.Type}, type));
         end
         
