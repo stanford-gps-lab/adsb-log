@@ -49,6 +49,16 @@ classdef Aircraft < matlab.mixin.Copyable
             obj.FlightSegments = [];
         end
 
+        function orig = getOrigin(obj)
+            % getOrigin    retrieve the unique list of origin airports
+            % for this aircraft from the set of flight logs contained in
+            % this object.
+            %   orig = aircraft.getOrigin() returns a cell array of
+            %   the unique origins of all the flight logs
+
+            orig = unique({obj.FlightSegments.Origin});
+        end
+        
         function dest = getDestination(obj)
             % getDestination    retrieve the unique list of destinations
             % for this aircraft from the set of flight logs contained in
@@ -73,16 +83,43 @@ classdef Aircraft < matlab.mixin.Copyable
         end
         
         function ac = getAircraftByType(obj, type)
-            % getAircraftByType     retrieve a specific aircraft from a
+            % getAircraftByType     retrieve all aircraft from a
             % list of Aircraft by Type
             %   ac = aircraft.getAircraftByType(type) returns the Aircraft
-            %   object containing the data for the aircraft with the
-            %   specified Type (e.g. 'B738') from a list of Aircraft types
+            %   object containing the data for all aircraft with the
+            %   specified Type (e.g. 'B738') from a list of Aircraft
             %   (aircraft).  If it is not found, the result in an empty
             %   object.
             
-            % get the aircraft with that Type from the list
+            % get all aircraft with that Type from the list
             ac = obj(strcmp({obj.Type}, type));
+        end
+        
+        function ac = getAircraftByOrigin(obj, origin)
+            % getAircraftByOrigin     retrieve all aircraft from a
+            % list of Aircraft that have a segment with specific origin
+            %   ac = aircraft.getAircraftByOrigin(origin) returns the 
+            %   Aircraft object containing the data for all aircraft with 
+            %   the specified Origin (e.g. 'KSFO') among their flights.
+            %   If none is found, the result in an empty object.
+            
+            % get all aircraft with that Origin from the list
+            ACi = arrayfun(@(x) any(strcmp(x.getOrigin, origin)), obj);
+            ac = obj(ACi);
+        end
+        
+        function ac = getAircraftByDestination(obj, dest)
+            % getAircraftByDestination     retrieve all aircraft from a
+            % list of Aircraft that have a segment with specific
+            % destination
+            %   ac = aircraft.getAircraftByDestination(dest) returns the 
+            %   Aircraft object containing the data for all aircraft with 
+            %   the specified Destination (e.g. 'KSFO') among their
+            %   flights. If none is found, the result in an empty object.
+            
+            % get all aircraft with that Destination from the list
+            ACi = arrayfun(@(x) any(strcmp(x.getDestination, dest)), obj);
+            ac = obj(ACi);
         end
         
         function createKML(obj, filename)
